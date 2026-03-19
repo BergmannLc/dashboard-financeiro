@@ -3,9 +3,20 @@ from database import engine, SessionLocal
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+# Importamos o middleware de CORS
+from fastapi.middleware.cors import CORSMiddleware
 
-# Instância do Servidor Criada
+# 1. Instância do Servidor Criada
 app = FastAPI()
+
+# 2. CONFIGURAÇÃO DO CORS (Obrigatório para o Front conversar com o Back)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite pedidos de qualquer origem (seu Live Server)
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (GET, POST, etc)
+    allow_headers=["*"],  # Permite todos os cabeçalhos
+)
 
 # Esta linha cria as tabelas no banco de dados se elas não existirem
 models.Base.metadata.create_all(bind=engine)
@@ -25,6 +36,7 @@ def get_db():
         db.close()
 
 # --- ROTAS ---
+
 @app.get("/")
 def home():
     return {"status": "Servidor Rodando"}
