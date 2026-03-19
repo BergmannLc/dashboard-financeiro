@@ -58,3 +58,13 @@ def criar_transacao(transacao: TransacaoSchema, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(nova_transacao)
     return nova_transacao
+
+# Rota para EXCLUIR uma transação
+@app.delete("/transacoes/{transacao_id}")
+def excluir_transacao(transacao_id: int, db: Session = Depends(get_db)):
+    db_transacao = db.query(models.Transacao).filter(models.Transacao.id == transacao_id).first()
+    if db_transacao:
+        db.delete(db_transacao)
+        db.commit()
+        return {"message": "Excluído com sucesso"}
+    return {"message": "Transação não encontrada"}
