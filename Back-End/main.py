@@ -3,6 +3,7 @@ from database import engine, SessionLocal
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+
 # Importamos o middleware de CORS
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -26,6 +27,7 @@ class TransacaoSchema(BaseModel):
     descricao: str
     valor: float
     tipo: str
+    categoria: str
 
 # --- DEPENDÊNCIA (Conexão com o Banco) ---
 def get_db():
@@ -52,7 +54,8 @@ def criar_transacao(transacao: TransacaoSchema, db: Session = Depends(get_db)):
     nova_transacao = models.Transacao(
         descricao=transacao.descricao,
         valor=transacao.valor,
-        tipo=transacao.tipo
+        tipo=transacao.tipo,
+        categoria=transacao.categoria
     )
     db.add(nova_transacao)
     db.commit()
