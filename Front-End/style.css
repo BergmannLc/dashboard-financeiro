@@ -1,6 +1,6 @@
 /* Configurações Gerais */
 body {
-    font-family: 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
     color: #333;
     display: flex;
@@ -9,24 +9,60 @@ body {
     padding: 20px;
 }
 
-h1 { color: #2c3e50 }
+h1 { color: #2c3e50; margin-bottom: 30px; }
 
-/* Estilo dos Cards (Seções) */
-section{
+/* Estilo das Seções (Cards Brancos) */
+section {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0,1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 500px;
     margin-bottom: 20px;
 }
 
+/* Layout dos Cards de Resumo (Topo) */
+.resumo {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    background: transparent; /* Remove o fundo da seção pai */
+    box-shadow: none;        /* Remove a sombra da seção pai */
+    padding: 0;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card h4 { 
+    margin: 0; 
+    font-size: 13px; 
+    color: #7f8c8d; 
+    text-transform: uppercase; 
+}
+
+.card p { 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin: 8px 0 0 0; 
+}
+
+/* Cores de Destaque */
+.receita { color: #27ae60; }
+.despesa { color: #e74c3c; }
+
 /* Formulário */
 form { display: flex; flex-direction: column; gap: 10px; }
 
 input, select, button {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
@@ -41,40 +77,28 @@ button {
     transition: 0.3s;
 }
 
-button:hover { background-color: #219150;}
+button:hover { background-color: #219150; }
 
-/* Lista de Transações*/
+/* Lista de Transações */
 ul { list-style: none; padding: 0; }
 
 li {
     background: #f9f9f9;
-    margin-bottom: 5px;
-    padding: 10px;
-    border-left: 5px solid #27ae60;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 0 5px 5px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
 
-.resumo {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
+/* Ajuste para telas pequenas */
+@media (max-width: 480px) {
+    .resumo {
+        flex-direction: column;
+    }
+    .card {
+        width: 100%;
+    }
 }
-
-.card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    flex: 1;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0,1);
-}
-
-.card h4 { margin: 0; font-size: 14px; color: #7f8c8d;}
-.card p { font-size: 20px; font-weight: bold; margin: 5px 0 0 0; }
-
-.receita { color: #27ae60}
-.despesa { color: #e74c3c;}
