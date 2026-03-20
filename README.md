@@ -25,7 +25,6 @@ Versionamento: Git & GitHub
 
 🏗️ Arquitetura do Projeto
 O projeto utiliza uma estrutura desacoplada para garantir escalabilidade:
-
 RoadMap/
 ├── main.py           # Rotas da API e lógica de negócio (FastAPI)
 ├── models.py         # Definição das tabelas do banco (SQLAlchemy)
