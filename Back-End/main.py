@@ -1,35 +1,25 @@
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from datetime import date, datetime
 import models
 from database import engine, SessionLocal
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
 
-# Importamos o middleware de CORS
-from fastapi.middleware.cors import CORSMiddleware
-
-# 1. Instância do Servidor Criada
-app = FastAPI()
-
-# 2. CONFIGURAÇÃO DO CORS (Obrigatório para o Front conversar com o Back)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Permite pedidos de qualquer origem (seu Live Server)
-    allow_credentials=True,
-    allow_methods=["*"],  # Permite todos os métodos (GET, POST, etc)
-    allow_headers=["*"],  # Permite todos os cabeçalhos
-)
-
-# Esta linha cria as tabelas no banco de dados se elas não existirem
+# Cria as tabelas no banco de dados se não existirem
 models.Base.metadata.create_all(bind=engine)
 
-# --- SCHEMA (Contrato de dados) ---
-class TransacaoSchema(BaseModel):
-    descricao: str
-    valor: float
-    tipo: str
-    categoria: str
+app = FastAPI()
 
-# --- DEPENDÊNCIA (Conexão com o Banco) ---
+# Configuração do CORS para o Front-End conseguir acessar a API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Dependência para abrir/fechar o banco de dados
 def get_db():
     db = SessionLocal()
     try:
@@ -37,37 +27,47 @@ def get_db():
     finally:
         db.close()
 
+# --- SCHEMAS (O que o FastAPI espera receber do JavaScript) ---
+class TransacaoSchema(BaseModel):
+    descricao: str
+    valor: float
+    tipo: str
+    categoria: str
+    data: date # O campo que adicionamos para aceitar a data do formulário
+
 # --- ROTAS ---
 
-@app.get("/")
-def home():
-    return {"status": "Servidor Rodando"}
-
-# Rota para LISTAR (Lê do banco de dados real)
+# 1. Listar transações (Ordenadas pela data mais recente)
 @app.get("/transacoes")
 def listar_transacoes(db: Session = Depends(get_db)):
-    return db.query(models.Transacao).all()
+    return db.query(models.Transacao).order_by(models.Transacao.data.desc()).all()
 
-# Rota para CRIAR (Salva no banco de dados real)
+# 2. Criar nova transação
 @app.post("/transacoes")
 def criar_transacao(transacao: TransacaoSchema, db: Session = Depends(get_db)):
     nova_transacao = models.Transacao(
         descricao=transacao.descricao,
         valor=transacao.valor,
         tipo=transacao.tipo,
-        categoria=transacao.categoria
+        categoria=transacao.categoria,
+        # O banco SQLite/SQLAlchemy precisa de datetime, então combinamos a data com o horário zero
+        data=datetime.combine(transacao.data, datetime.min.time())
     )
     db.add(nova_transacao)
     db.commit()
     db.refresh(nova_transacao)
     return nova_transacao
 
-# Rota para EXCLUIR uma transação
+# 3. Deletar transação
 @app.delete("/transacoes/{transacao_id}")
-def excluir_transacao(transacao_id: int, db: Session = Depends(get_db)):
-    db_transacao = db.query(models.Transacao).filter(models.Transacao.id == transacao_id).first()
-    if db_transacao:
-        db.delete(db_transacao)
-        db.commit()
-        return {"message": "Excluído com sucesso"}
-    return {"message": "Transação não encontrada"}
+def deletar_transacao(transacao_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.Transacao).filter(models.Transacao.id == transacao_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Transação não encontrada")
+    db.delete(item)
+    db.commit()
+    return {"message": "Deletado com sucesso"}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)

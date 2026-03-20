@@ -102,3 +102,19 @@ li {
         width: 100%;
     }
 }
+
+input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box; /* Garante que não passe da largura do formulário */
+    font-family: inherit;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #34495e;
+}

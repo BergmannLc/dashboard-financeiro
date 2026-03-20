@@ -5,6 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Meu Dashboard Financeiro</title>
+    <style>
+        /* Pequenos ajustes para os novos campos */
+        .campo-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .campo-grupo label {
+            font-size: 0.85em;
+            color: #555;
+            font-weight: bold;
+        }
+        .secao-filtro {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        input[type="date"], input[type="month"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+    </style>
 </head>
 <body>
 
@@ -45,6 +76,11 @@
                 <option value="receita">Receita (Entrada)</option>
             </select>
 
+            <div class="campo-grupo">
+                <label for="data">Data da Transação:</label>
+                <input type="date" id="data" required>
+            </div>
+
             <button type="submit">Adicionar</button>
         </form>
     </section>
@@ -52,7 +88,7 @@
     <hr>
 
     <section>
-        <h3>Resumo Visual</h3>
+        <h3>Resumo Visual (Gastos por Categoria)</h3>
         <div style="max-width: 300px; margin: 0 auto;">
             <canvas id="meuGrafico"></canvas>
         </div>
@@ -60,8 +96,14 @@
 
     <section>
         <h3>Minhas Transações</h3>
+        
+        <div class="secao-filtro">
+            <label for="filtro-mes">Visualizar Mês:</label>
+            <input type="month" id="filtro-mes">
+        </div>
+
         <ul id="lista-transacoes">
-        </ul>
+            </ul>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
