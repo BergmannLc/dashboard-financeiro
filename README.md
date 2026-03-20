@@ -1,34 +1,49 @@
-# 💰 Dashboard Financeiro Pessoal
+💰 Dashboard Financeiro Pessoal (v2.0)
+Um sistema Full Stack completo para controle de finanças, focado em visualização de dados e gestão por competência mensal. Este projeto demonstra a integração entre uma API assíncrona, banco de dados relacional e manipulação dinâmica do DOM.
 
-Um sistema Full Stack de controle de finanças desenvolvido para fins de estudo de integração entre Front-End, Back-End e Banco de Dados.
+🚀 Tecnologias Utilizadas
+Back-End: Python com FastAPI (Uvicorn)
 
-## 🚀 Tecnologias Utilizadas
+Banco de Dados: SQLite com SQLAlchemy (ORM)
 
-* **Back-End:** Python com **FastAPI**
-* **Banco de Dados:** SQLite com **SQLAlchemy** (ORM)
-* **Front-End:** HTML5, CSS3 e JavaScript (Fetch API)
-* **Versionamento:** Git & GitHub
+Front-End: HTML5, CSS3 e JavaScript (Fetch API)
 
-## 🛠️ Funcionalidades
+Gráficos: Chart.js para visualização de despesas
 
-* **Cadastro de Transações:** Adiciona descrição, valor e tipo (Receita/Despesa).
-* **Cálculo Automático:** Dashboard exibe o total de entradas, saídas e o saldo líquido em tempo real.
-* **Persistência de Dados:** Os dados são salvos em um banco de dados relacional.
-* **Exclusão:** Permite remover registros indesejados diretamente pela interface.
-* **Interface Responsiva:** Layout que se adapta a diferentes tamanhos de tela.
+Versionamento: Git & GitHub
 
-## 🏗️ Arquitetura do Projeto
+🛠️ Novas Funcionalidades (Updates)
+📊 Resumo Visual: Gráfico de pizza interativo que categoriza gastos automaticamente.
 
-O projeto segue uma estrutura separada para facilitar a manutenção:
+📅 Lançamento Retroativo: Campo de data manual que permite registrar gastos de dias anteriores.
 
-```text
+🔍 Filtro Mensal Dinâmico: Seletor de mês que filtra a lista de transações e recalcula o dashboard e o gráfico em tempo real.
+
+🗂️ Categorização: Organização de gastos por tipos (Alimentação, Lazer, Transporte, etc.).
+
+💰 Gestão de Fluxo: Cálculo automático de Entradas, Saídas e Saldo Líquido.
+
+🏗️ Arquitetura do Projeto
+O projeto utiliza uma estrutura desacoplada para garantir escalabilidade:
+
 RoadMap/
-├── Back-End/         # API em FastAPI, Modelos e Banco de Dados
-├── Front-End/        # Interface do Usuário (HTML, CSS, JS)
-└── README.md         # Documentação do projeto
+├── main.py           # Rotas da API e lógica de negócio (FastAPI)
+├── models.py         # Definição das tabelas do banco (SQLAlchemy)
+├── database.py       # Configuração da conexão com SQLite
+├── index.html        # Estrutura da interface com filtros e dashboard
+├── style.css         # Estilização moderna e responsiva
+└── script.js         # Lógica de consumo da API, filtros e Chart.js
 
 🔧 Como Rodar o Projeto
-1. Instale as dependências: pip install fastapi uvicorn sqlalchemy
-2. Navegue até a pasta do servidor: cd Back-End
-3. Inicie o servidor: python -m uvicorn main:app --reload
-4. Abra o arquivo Front-End/index.html no seu navegador.
+Instale as dependências: pip install fastapi uvicorn sqlalchemy
+
+Inicie o servidor local: python main.py ou python -m uvicorn main:app --reload
+
+Acesse o sistema: Abra o arquivo index.html diretamente no seu navegador.
+
+📝 Próximos Passos (Roadmap)
+[ ] Geração de relatórios semanais detalhados.
+
+[ ] Exportação de dados para CSV/Excel.
+
+[ ] Definição de metas de gastos por categoria.
